@@ -1,12 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import homebg from "../assets/homebg.jpg"
 import BookCard from '../components/BookCard'
+import { RxCross1 } from "react-icons/rx";
+import { VscSearch } from "react-icons/vsc";
 const Bookshelf = () => {
-    const [books,setBooks] = useState(JSON.parse(localStorage.bookmarks))
+    const bookmarks = JSON.parse(localStorage.bookmarks)
+    const [books,setBooks] = useState(bookmarks)
+    const [search,setSearch] = useState("");
     const [multi,setMulti] = useState(false)
     const [selected,setSelected] = useState([])
     // console.log(selected)
+    useEffect(()=>{
+        if(search.trim() == "") {
+            setBooks(bookmarks);
+            return;
+        }
+        const newBooks = books.filter(book => book.title.toLowerCase().includes(search));
+        // setBooks(newBooks)
+    },[search])
+    console.log(search)
   return (
     <div className='w-full h-full'>
         <Navbar/>
@@ -20,6 +33,20 @@ const Bookshelf = () => {
                 backgroundPosition:"center"
                 }}>
                 My Bookshelf!
+            </div>
+            <div className='w-full h-14 flex justify-center items-center '>
+                <div className='w-[80%] flex items-center justify-between h-10 rounded-xl border-black/30 border-[2px] bg-white/70 pr-2' >
+                    <div className='w-[95%] flex gap-x-2 items-center h-full'>
+                        <VscSearch className='bg-gray-400 h-full py-2 rounded-l-lg w-[7%] max-sm:w-[10%] max-sm:px-[4px]'/>
+                        <input 
+                            className='focus:outline-none w-[90%]'
+                            placeholder='Search a book'  
+                            value={search}
+                            onChange={e => setSearch(e.target.value)}
+                        />
+                    </div>
+                    <RxCross1 className='' onClick={()=>{setSearch("")}} />
+                </div>
             </div>
             {
                 !multi ? 
