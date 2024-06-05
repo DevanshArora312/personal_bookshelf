@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FaStar,FaBookmark,FaRegBookmark } from "react-icons/fa6";
+import Loader from './Loader';
 const BookCard = ({title,author,img,rating,pages,multi,selected,setSelected}) => {
     const [url,setUrl] = useState("");
     useEffect(()=>{
@@ -8,11 +9,17 @@ const BookCard = ({title,author,img,rating,pages,multi,selected,setSelected}) =>
             // console.log(res)
             setUrl(res.url)
         })
+        return ()=>{
+            setUrl(null)
+        }
     },[title]);
+    useEffect(()=>{
+        setStyled(false)
+    },[])
     const [styled,setStyled] = useState(selected?.indexOf(title) !== -1);
     const [saved,setSaved] = useState(JSON.parse(window.localStorage.getItem("bookmarks")).findIndex(e => e.title === title));
     // console.log(author);
-    if(!multi){
+    if(!multi ){
         return (
             <div className='flex max-sm:w-[300px] w-[370px] h-[200px] border-[2px] p-2 gap-x-2 items-center justify-between ' >
                 <img src={url} className='w-[120px] h-[180px]' alt={title}/>
@@ -49,7 +56,7 @@ const BookCard = ({title,author,img,rating,pages,multi,selected,setSelected}) =>
             </div>
           )
     }
-    else{  
+    else {  
         // console.log(title,styled)
         return (
             <div className={`flex max-sm:w-[300px] w-[370px] h-[200px] border-[2px] p-2 gap-x-2 items-center justify-between duration-300 cursor-pointer ${styled ? "scale-90 brightness-50 bg-white/25" : ''}`} 
@@ -83,7 +90,7 @@ const BookCard = ({title,author,img,rating,pages,multi,selected,setSelected}) =>
                 </div>
             </div>
           )
-    }
+        }
 }
 
 export default BookCard

@@ -17,9 +17,9 @@ const Bookshelf = () => {
             return;
         }
         const newBooks = books.filter(book => book.title.toLowerCase().includes(search));
-        // setBooks(newBooks)
+        setBooks(newBooks)
     },[search])
-    console.log(search)
+    // console.log(search)
   return (
     <div className='w-full h-full'>
         <Navbar/>
